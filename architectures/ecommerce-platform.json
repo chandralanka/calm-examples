@@ -1,0 +1,561 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "ecommerce-order-processing-platform",
+  "name": "E-Commerce Order Processing Platform",
+  "description": "E-commerce order processing platform",
+  "metadata": [
+    {
+      "owner": "github.copilot@openai.com",
+      "repository": "https://github.com/placeholder/ecommerce-platform",
+      "deployment-type": "cloud-native",
+      "version": "1.0.0",
+      "created": "2026-04-26",
+      "description": "E-commerce order processing platform",
+      "tags": ["ecommerce", "microservices", "orders"]
+    }
+  ],
+  "nodes": [
+    {
+      "unique-id": "customer-actor",
+      "node-type": "actor",
+      "name": "Customer",
+      "description": "An end customer placing orders through the e-commerce platform",
+      "costCenter": "CC-1001",
+      "owner": "Customer Experience Team",
+      "metadata": [
+        {
+          "owner": "github.copilot@openai.com",
+          "repository": "https://github.com/placeholder/ecommerce-platform",
+          "deployment-type": "user-facing",
+          "criticality": "high"
+        }
+      ]
+    },
+    {
+      "unique-id": "admin-actor",
+      "node-type": "actor",
+      "name": "Admin",
+      "description": "Platform administrator managing orders, inventory, and payment issues",
+      "costCenter": "CC-1002",
+      "owner": "Platform Administration Team",
+      "metadata": [
+        {
+          "owner": "github.copilot@openai.com",
+          "repository": "https://github.com/placeholder/ecommerce-platform",
+          "deployment-type": "user-facing",
+          "criticality": "high"
+        }
+      ]
+    },
+    {
+      "unique-id": "api-gateway",
+      "node-type": "service",
+      "name": "API Gateway",
+      "description": "Central entry point for customer and admin requests routed to backend services",
+      "costCenter": "CC-1003",
+      "owner": "Platform Engineering Team",
+      "interfaces": [
+        {
+          "unique-id": "api-gateway-http-interface",
+          "url": "https://api.ecommerce.example.com",
+          "protocol": "HTTPS"
+        },
+        {
+          "unique-id": "api-gateway-health-interface",
+          "url": "https://api.ecommerce.example.com/health",
+          "protocol": "HTTPS",
+          "type": "health-check"
+        }
+      ],
+      "metadata": [
+        {
+          "owner": "github.copilot@openai.com",
+          "repository": "https://github.com/placeholder/ecommerce-platform",
+          "deployment-type": "container",
+          "criticality": "critical",
+          "tech-stack": "Node.js, Express"
+        }
+      ]
+    },
+    {
+      "unique-id": "order-service",
+      "node-type": "service",
+      "name": "Order Service",
+      "description": "Handles order creation, updates, and retrieval across the platform",
+      "costCenter": "CC-1004",
+      "owner": "Platform Engineering Team",
+      "interfaces": [
+        {
+          "unique-id": "order-service-rest-interface",
+          "url": "https://api.ecommerce.example.com/orders",
+          "protocol": "HTTPS"
+        },
+        {
+          "unique-id": "order-service-health-interface",
+          "url": "https://api.ecommerce.example.com/orders/health",
+          "protocol": "HTTPS",
+          "type": "health-check"
+        },
+        {
+          "unique-id": "order-service-events-interface",
+          "url": "amqp://events.ecommerce.example.com",
+          "type": "event-stream",
+          "events": ["OrderCreated", "OrderUpdated", "OrderCancelled"]
+        }
+      ],
+      "metadata": [
+        {
+          "owner": "github.copilot@openai.com",
+          "repository": "https://github.com/placeholder/ecommerce-platform",
+          "deployment-type": "container",
+          "criticality": "critical",
+          "tech-stack": "Java 17, Spring Boot 3.2"
+        }
+      ]
+    },
+    {
+      "unique-id": "inventory-service",
+      "node-type": "service",
+      "name": "Inventory Service",
+      "description": "Manages stock levels, availability, and inventory validation for orders",
+      "costCenter": "CC-1005",
+      "owner": "Platform Engineering Team",
+      "interfaces": [
+        {
+          "unique-id": "inventory-service-rest-interface",
+          "url": "https://api.ecommerce.example.com/inventory",
+          "protocol": "HTTPS"
+        },
+        {
+          "unique-id": "inventory-service-health-interface",
+          "url": "https://api.ecommerce.example.com/inventory/health",
+          "protocol": "HTTPS",
+          "type": "health-check"
+        }
+      ],
+      "metadata": [
+        {
+          "owner": "github.copilot@openai.com",
+          "repository": "https://github.com/placeholder/ecommerce-platform",
+          "deployment-type": "container",
+          "criticality": "high",
+          "tech-stack": "Java 17, Spring Boot 3.2"
+        }
+      ]
+    },
+    {
+      "unique-id": "payment-service",
+      "node-type": "service",
+      "name": "Payment Service",
+      "description": "Processes payment authorization, settlement, and status updates for orders",
+      "costCenter": "CC-1006",
+      "owner": "Platform Engineering Team",
+      "interfaces": [
+        {
+          "unique-id": "payment-service-rest-interface",
+          "url": "https://api.ecommerce.example.com/payments",
+          "protocol": "HTTPS"
+        },
+        {
+          "unique-id": "payment-service-health-interface",
+          "url": "https://api.ecommerce.example.com/payments/health",
+          "protocol": "HTTPS",
+          "type": "health-check"
+        },
+        {
+          "unique-id": "payment-service-events-interface",
+          "url": "amqp://events.ecommerce.example.com",
+          "type": "event-stream",
+          "events": ["PaymentProcessed", "PaymentFailed", "PaymentRefunded"]
+        }
+      ],
+      "metadata": [
+        {
+          "owner": "github.copilot@openai.com",
+          "repository": "https://github.com/placeholder/ecommerce-platform",
+          "deployment-type": "container",
+          "criticality": "critical",
+          "tech-stack": "Java 17, Spring Boot 3.2",
+          "compliance": "PCI-DSS Level 1"
+        }
+      ]
+    },
+    {
+      "unique-id": "order-database",
+      "node-type": "database",
+      "name": "Order Database",
+      "description": "Stores order records, status updates, and customer purchase history",
+      "costCenter": "CC-1004",
+      "owner": "Platform Engineering Team",
+      "interfaces": [
+        {
+          "unique-id": "order-database-jdbc-interface",
+          "type": "JDBC",
+          "connection-string": "jdbc:postgresql://orders-db.ecommerce.example.com:5432/orders"
+        }
+      ],
+      "metadata": [
+        {
+          "owner": "github.copilot@openai.com",
+          "repository": "https://github.com/placeholder/ecommerce-platform",
+          "deployment-type": "managed-database",
+          "criticality": "critical",
+          "backup-frequency": "hourly",
+          "replication": "enabled"
+        }
+      ]
+    },
+    {
+      "unique-id": "inventory-database",
+      "node-type": "database",
+      "name": "Inventory Database",
+      "description": "Stores inventory counts, product availability, and warehouse stock data",
+      "costCenter": "CC-1004",
+      "owner": "Platform Engineering Team",
+      "interfaces": [
+        {
+          "unique-id": "inventory-database-jdbc-interface",
+          "type": "JDBC",
+          "connection-string": "jdbc:postgresql://inventory-db.ecommerce.example.com:5432/inventory"
+        }
+      ],
+      "metadata": [
+        {
+          "owner": "github.copilot@openai.com",
+          "repository": "https://github.com/placeholder/ecommerce-platform",
+          "deployment-type": "managed-database",
+          "criticality": "high",
+          "backup-frequency": "daily",
+          "replication": "enabled"
+        }
+      ]
+    },
+    {
+      "unique-id": "payment-database",
+      "node-type": "database",
+      "name": "Payment Database",
+      "description": "Stores payment transactions, receipts, and reconciliation records with PCI-DSS compliance",
+      "costCenter": "CC-1004",
+      "owner": "Platform Engineering Team",
+      "interfaces": [
+        {
+          "unique-id": "payment-database-jdbc-interface",
+          "type": "JDBC",
+          "connection-string": "jdbc:postgresql://payment-db.ecommerce.example.com:5432/payments"
+        }
+      ],
+      "metadata": [
+        {
+          "owner": "github.copilot@openai.com",
+          "repository": "https://github.com/placeholder/ecommerce-platform",
+          "deployment-type": "managed-database",
+          "criticality": "critical",
+          "backup-frequency": "continuous",
+          "replication": "enabled",
+          "encryption": "at-rest and in-transit",
+          "compliance": "PCI-DSS Level 1"
+        }
+      ]
+    },
+    {
+      "unique-id": "ecommerce-platform",
+      "node-type": "system",
+      "name": "E-Commerce Platform",
+      "description": "Logical system boundary encompassing the order processing services and databases",
+      "costCenter": "CC-1004",
+      "owner": "Platform Engineering Team",
+      "metadata": [
+        {
+          "owner": "github.copilot@openai.com",
+          "repository": "https://github.com/placeholder/ecommerce-platform",
+          "deployment-type": "cloud-native"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "customer-to-api-gateway",
+      "description": "Customer interacts with the API gateway to submit and view orders",
+      "dataClassification": "public",
+      "encrypted": true,
+      "relationship-type": {
+        "interacts": {
+          "actor": "customer-actor",
+          "nodes": ["api-gateway"]
+        }
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "sla": "99.99% availability",
+        "monitoring": "request-latency, error-rate",
+        "timeout-ms": 5000,
+        "retry-policy": "exponential backoff, max 3 retries",
+        "rate-limiting": "1000 requests/sec"
+      }
+    },
+    {
+      "unique-id": "admin-to-api-gateway",
+      "description": "Admin interacts with the API gateway to manage orders and inventory",
+      "dataClassification": "internal",
+      "encrypted": true,
+      "relationship-type": {
+        "interacts": {
+          "actor": "admin-actor",
+          "nodes": ["api-gateway"]
+        }
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "sla": "99.95% availability",
+        "monitoring": "request-latency, error-rate, authentication-events",
+        "timeout-ms": 10000,
+        "retry-policy": "exponential backoff, max 2 retries",
+        "circuit-breaker": "enabled",
+        "rate-limiting": "500 requests/sec"
+      }
+    },
+    {
+      "unique-id": "api-gateway-to-order-service",
+      "description": "API Gateway routes order traffic to the Order Service",
+      "dataClassification": "internal",
+      "encrypted": true,
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "api-gateway",
+            "interfaces": ["api-gateway-http-interface"]
+          },
+          "destination": {
+            "node": "order-service",
+            "interfaces": ["order-service-rest-interface"]
+          }
+        }
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "sla": "99.90% availability",
+        "monitoring": "response-time, throughput, error-rate",
+        "timeout-ms": 8000,
+        "retry-policy": "exponential backoff, max 3 retries",
+        "circuit-breaker": "enabled",
+        "rate-limiting": "800 requests/sec"
+      }
+    },
+    {
+      "unique-id": "api-gateway-to-inventory-service",
+      "description": "API Gateway routes inventory queries to the Inventory Service",
+      "dataClassification": "internal",
+      "encrypted": true,
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "api-gateway",
+            "interfaces": ["api-gateway-http-interface"]
+          },
+          "destination": {
+            "node": "inventory-service",
+            "interfaces": ["inventory-service-rest-interface"]
+          }
+        }
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "sla": "99.90% availability",
+        "monitoring": "response-time, throughput, stock-sync-latency",
+        "timeout-ms": 6000,
+        "retry-policy": "exponential backoff, max 3 retries",
+        "circuit-breaker": "enabled",
+        "rate-limiting": "1200 requests/sec"
+      }
+    },
+    {
+      "unique-id": "order-service-to-order-database",
+      "description": "Order Service reads and writes order data in the Order Database",
+      "dataClassification": "internal",
+      "encrypted": true,
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "order-service",
+            "interfaces": ["order-service-rest-interface"]
+          },
+          "destination": {
+            "node": "order-database",
+            "interfaces": ["order-database-jdbc-interface"]
+          }
+        }
+      },
+      "protocol": "JDBC",
+      "metadata": {
+        "sla": "99.95% availability",
+        "monitoring": "query-latency, connection-pool-utilization, transaction-count",
+        "timeout-ms": 30000,
+        "retry-policy": "exponential backoff, max 5 retries",
+        "circuit-breaker": "enabled",
+        "connection-pool-size": "20-50"
+      }
+    },
+    {
+      "unique-id": "order-service-to-payment-service",
+      "description": "Order Service initiates payment processing with the Payment Service",
+      "dataClassification": "internal",
+      "encrypted": true,
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "order-service",
+            "interfaces": ["order-service-rest-interface"]
+          },
+          "destination": {
+            "node": "payment-service",
+            "interfaces": ["payment-service-rest-interface"]
+          }
+        }
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "sla": "99.99% availability",
+        "monitoring": "response-time, transaction-success-rate, payment-authorization-time",
+        "timeout-ms": 15000,
+        "retry-policy": "exponential backoff, max 5 retries",
+        "circuit-breaker": "enabled",
+        "rate-limiting": "200 requests/sec"
+      }
+    },
+    {
+      "unique-id": "order-service-to-inventory-service",
+      "description": "Order Service queries Inventory Service to verify stock availability before confirming orders",
+      "dataClassification": "internal",
+      "encrypted": true,
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "order-service",
+            "interfaces": ["order-service-rest-interface"]
+          },
+          "destination": {
+            "node": "inventory-service",
+            "interfaces": ["inventory-service-rest-interface"]
+          }
+        }
+      },
+      "protocol": "HTTPS",
+      "metadata": {
+        "sla": "99.90% availability",
+        "monitoring": "response-time, stock-check-latency",
+        "timeout-ms": 5000,
+        "retry-policy": "exponential backoff, max 2 retries",
+        "circuit-breaker": "enabled",
+        "rate-limiting": "500 requests/sec"
+      }
+    },
+    {
+      "unique-id": "payment-service-to-payment-database",
+      "description": "Payment Service reads and writes payment transaction records to the Payment Database",
+      "dataClassification": "internal",
+      "encrypted": true,
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "payment-service",
+            "interfaces": ["payment-service-rest-interface"]
+          },
+          "destination": {
+            "node": "payment-database",
+            "interfaces": ["payment-database-jdbc-interface"]
+          }
+        }
+      },
+      "protocol": "JDBC",
+      "metadata": {
+        "sla": "99.99% availability",
+        "monitoring": "query-latency, transaction-count, payment-settlement-time",
+        "timeout-ms": 30000,
+        "retry-policy": "exponential backoff, max 5 retries",
+        "circuit-breaker": "enabled",
+        "connection-pool-size": "10-30",
+        "compliance": "PCI-DSS transaction logging"
+      }
+    },
+    {
+      "unique-id": "order-service-to-payment-database",
+      "description": "Order Service reads payment history and receipt data from the Payment Database for order reconciliation",
+      "dataClassification": "internal",
+      "encrypted": true,
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "order-service",
+            "interfaces": ["order-service-rest-interface"]
+          },
+          "destination": {
+            "node": "payment-database",
+            "interfaces": ["payment-database-jdbc-interface"]
+          }
+        }
+      },
+      "protocol": "JDBC",
+      "metadata": {
+        "sla": "99.95% availability",
+        "monitoring": "query-latency, read-operations-count",
+        "timeout-ms": 20000,
+        "retry-policy": "exponential backoff, max 3 retries",
+        "circuit-breaker": "enabled",
+        "connection-pool-size": "10-20",
+        "access-type": "read-only"
+      }
+    },
+    {
+      "unique-id": "inventory-service-to-inventory-database",
+      "description": "Inventory Service reads and updates stock availability from the Inventory Database",
+      "dataClassification": "internal",
+      "encrypted": true,
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "inventory-service",
+            "interfaces": ["inventory-service-rest-interface"]
+          },
+          "destination": {
+            "node": "inventory-database",
+            "interfaces": ["inventory-database-jdbc-interface"]
+          }
+        }
+      },
+      "protocol": "JDBC",
+      "metadata": {
+        "sla": "99.90% availability",
+        "monitoring": "query-latency, connection-pool-utilization, stock-update-frequency",
+        "timeout-ms": 25000,
+        "retry-policy": "exponential backoff, max 3 retries",
+        "circuit-breaker": "enabled",
+        "connection-pool-size": "15-40"
+      }
+    },
+    {
+      "unique-id": "platform-composition",
+      "description": "E-Commerce Platform is composed of the API gateway, backend services, and databases",
+      "dataClassification": "internal",
+      "encrypted": true,
+      "relationship-type": {
+        "composed-of": {
+          "container": "ecommerce-platform",
+          "nodes": [
+            "api-gateway",
+            "order-service",
+            "inventory-service",
+            "payment-service",
+            "order-database",
+            "inventory-database",
+            "payment-database"
+          ]
+        }
+      },
+      "metadata": {
+        "deployment-scope": "cloud-native",
+        "monitoring": "system-health, inter-service-latency, cross-service-transactions"
+      }
+    }
+  ]
+}

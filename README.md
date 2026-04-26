@@ -11,13 +11,13 @@ npm install --save-dev @finos/calm-server
 calm-server
 
 ## Install AI Agent
+calm init-ai -p copilot -d .
 calm init-ai -p claude
 
 ## Run Validations
-calm validate -p ./architectures/ecommerce-architecture.json
+calm validate -a architectures/ecommerce-platform.json
 
-calm validate -p pattern.json -a architecture.json -u url-mapping.json
-
+calm validate -p patterns/company-base-pattern.json -a architectures/ecommerce-platform.json -u url-mapping.json
 
 ## Docify
 calm docify -a ./architectures/ecommerce-architecture.json -o docs/generated
