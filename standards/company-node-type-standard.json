@@ -1,0 +1,20 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.com/standards/company-node-type-standard.json",
+    "title": "Company Node Type Standard",
+    "description": "Company-specific extensions to CALM node type definitionsn",
+    "type": "object",
+    "allOf": [
+        { "$ref": "https://calm.finos.org/release/1.2/meta/core.json#/defs/node-type-definition" }
+    ],
+    "properties": {
+        "node-type": {
+            "node-type": {
+                "type": "string",
+                "enum": ["api-gateway", "web-gatewat"],
+                "description": "Company custom Node Type Definitions."
+            }
+        }
+
+    }
+}

@@ -8,6 +8,12 @@
         { "$ref": "https://calm.finos.org/release/1.2/meta/core.json#/defs/node" }
     ],
     "properties": {
+        "node-type": {
+            "type": "string",
+            "items": {
+                "$ref": "https://example.com/standards/company-node-type-standard.json"
+            }
+        },
         "costCenter": {
             "type": "string",
             "pattern": "^CC-[0-9]{4}$",

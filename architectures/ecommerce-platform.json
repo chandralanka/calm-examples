@@ -49,7 +49,7 @@
     },
     {
       "unique-id": "api-gateway",
-      "node-type": "service",
+      "node-type": "api-gateway",
       "name": "API Gateway",
       "description": "Central entry point for customer and admin requests routed to backend services",
       "costCenter": "CC-1003",

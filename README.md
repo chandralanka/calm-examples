@@ -20,15 +20,20 @@ calm validate -a architectures/ecommerce-platform.json
 calm validate -p patterns/company-base-pattern.json -a architectures/ecommerce-platform.json -u url-mapping.json
 
 ## Docify
-calm docify -a ./architectures/ecommerce-architecture.json -o docs/generated
+calm docify -a ./architectures/ecommerce-platform.json -o docs/generated
 
-calm docify -a ./architectures/ecommerce-architecture.json -o docs/output -u url-mapping.json
+calm docify -a ./architectures/ecommerce-platform.json -o docs/output -u url-mapping.json
 
 ## Generate a custom Markdown report
-calm docify -a architecture.json -o reports/ -t my-report-template.hbs
+calm docify -a ./architectures/ecommerce-platform.json -o reports/ -t my-report-template.hbs
 
-calm docify -a architecture.json -o reports/ -d my-templates/
+calm docify -a ./architectures/ecommerce-platform.json -o reports/ -d my-templates/
 
+## Run CALM Docs website
+CD: docs\output
+npm install
+npm start
 
+# calm-server
 calm-server
 
